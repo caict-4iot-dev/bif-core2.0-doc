@@ -4,11 +4,11 @@
 
 共识是区块链的核心模块，其目的是使得各个节点的数据状态达成一致。其原理是各节点有共同的初始状态，然后通过共识算法形成一致的中间交易，最后各节点形成一致的最终状态。综合考虑目前市面共识算法的先进性以及星火链对性能的要求，计划基于hotstuff构建星火链的共识算法，hotstuff共识算法的先进性如下：
 
-1）通过在投票过程中引入门限签名实现了的消息验证复杂度。
+1）通过在投票过程中引入门限签名实现了的消息验证复杂度；
 
-2）使用了流水线共识加快了共识效率。
+2）使用了流水线共识加快了共识效率；
 
-3）具有乐观响应性（Optimistic Responsiveness）。
+3）具有乐观响应性（Optimistic Responsiveness）；
 
 4）安全性（Safety）与活性（Liveness）解耦。
 
@@ -20,7 +20,7 @@
 
 流程描述前对术语定义如下：
 
-**1）Type**，有五种消息类型，NEWVIEW、PREPARE、PRECOMMIT、COMMIT及DECIDE，其中NEWVIEW为试图切换即leader重新选举阶段，其他可参照上图对应各阶段的消息类型。
+**1）Type**，有五种消息类型，NEWVIEW、PREPARE、PRECOMMIT、COMMIT及DECIDE，其中NEWVIEW为试图切换即leader重新选举阶段，其他可参照上图对应各阶段的消息类型;
 
 **2）Node**, 节点可以理解为需要提交的交易集合，其数据格式为<parent, cmds>，nodes通过parent指针进行连接，组成一棵树。Parent可以用hash实现。
 
@@ -28,7 +28,7 @@
 
 **4）Msg**，由于hotstuff是基于消息传递的一致性算法，所以完整的消息格式为：<Type, view_number, node, justify>,Type为消息类型，view_number为视图编号，node为？，justify为QC。
 
-**5）voteMsg**, 投票类型的消息，格式为<Msg, partialSig>, 最终格式为<Type,view_number, node,justify, partialSig=signature<Type, view_numnber,node>>。
+**5）voteMsg**, 投票类型的消息，格式为<Msg, partialSig>, 最终格式为<Type,view_number, node,justify, partialSig=signature<Type, view_numnber,node>>；
 
 **6）prepareQC**, 由大多数的replica对PREPARE消息投票成功后的仲裁证书，其格式为<PREPARE, view_number, node_hash, [signature]>，其中node应为<cmd>原始交易值。
 
@@ -40,13 +40,13 @@
 
 针对Chained HotStuff，星火的共识流程如下：
 
-1）由星火核心模块调用共识模块，将共识cons_value值传递到共识模块。
+1）由星火核心模块调用共识模块，将共识cons_value值传递到共识模块；
 
-2）共识模块将Cons_value追加到最新树叶子节点，封装为cur_node，接下来判断当前的Replica是否为leader，如果为leader则签名并发送Proposal消息至各个Replica，Proposal消息为<PROPOSAL, cur_node<cons_value, view_number, highQC>, signature>。
+2）共识模块将Cons_value追加到最新树叶子节点，封装为cur_node，接下来判断当前的Replica是否为leader，如果为leader则签名并发送Proposal消息至各个Replica，Proposal消息为<PROPOSAL, cur_node<cons_value, view_number, highQC>, signature>；
 
-3）Replica接收Proposal消息，此刻对树分支做判断，更新当前的highQC为前一个节点的genericQC，并且追溯到父节点的祖父节点为commit状态，此时可以对其做**执行处理**。
+3）Replica接收Proposal消息，此刻对树分支做判断，更新当前的highQC为前一个节点的genericQC，并且追溯到父节点的祖父节点为commit状态，此时可以对其做**执行处理**；
 
-4）Replica和Leader，此时更新当前的view高度为proposal消息的高度（对应论文中的安全性检测和或许检测），接下来，对对cur_node签名后，发送VOTE消息到Leader，VOTE消息为<VOTE, cure_node_hash, signature<VOTE, cur_node_hash>>。
+4）Replica和Leader，此时更新当前的view高度为proposal消息的高度（对应论文中的安全性检测和或许检测），接下来，对对cur_node签名后，发送VOTE消息到Leader，VOTE消息为<VOTE, cure_node_hash, signature<VOTE, cur_node_hash>>；
 
 5）Leader接收各Replica的VOTE消息后，判断VOTE消息是否大于绝大多数，如果正好为绝大多数，则将合并后的genericQC更新到当前的node中。
 

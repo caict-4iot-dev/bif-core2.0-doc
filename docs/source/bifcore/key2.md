@@ -1,10 +1,10 @@
 # 2.星火关键字
 
-## 2.1 服务域
+## 2.1 业务域
 
-为支持不同业务领域数据在区块链上运行的业务场景，星火链增加了星火域的概念，不同业务领域数据用于构建不同服务域。
+为支持不同业务领域数据在区块链上运行的业务场景，星火链增加了业务域（又叫服务域）的概念，不同业务领域数据用于构建不同业务域。
 
-利用星火域，不同行业可以直接在星火链上处理业务数据。利用超级节点由权威机构承建背书，不同业务数据交易采用相同共识进行处理，保证系统安全性与权威性。域间交易处理、数据存储相互隔离，保证数据的安全性。
+利用业务域，不同行业可以直接在星火链上处理业务数据。利用超级节点由权威机构承建背书，不同业务数据交易采用相同共识进行处理，保证系统安全性与权威性。域间交易处理、数据存储相互隔离，保证数据的安全性。
 
 ## 2.2 账户
 
@@ -45,24 +45,24 @@ message Contract{
 }
 ```
 
-- address : 星火地址。
+- `address` : 星火地址。
 
-- balance : 账户余额，即账户所含星火令的数量；当账户打包并请求执行一笔交易的时候，支付的交易费用将从balance中扣除。如果支付的费用超过交易执行实际需要的费用，多余的部分将返回账户balance。
-- trusted : 账户可信标识，目前暂未使用。
+- `balance` : 账户余额，即账户所含星火令的数量；当账户打包并请求执行一笔交易的时候，支付的交易费用将从`balance`中扣除。如果支付的费用超过交易执行实际需要的费用，多余的部分将返回账户`balance`。
+- `trusted` : 账户可信标识，目前暂未使用。
 
-- public_key : 账户公钥，即生成账号的星火公钥。
+- `public_key` : 账户公钥，即生成账号的星火公钥。
 
-- contract : 如果为合约账户，包含此合约结构。
+- `contract` : 如果为合约账户，包含此合约结构。
 
-  -  type : 合约类型，目前仅支持solidity合约；
+  -  `type` : 合约类型，目前仅支持`solidity`合约
 
-  -  code : 合约代码；
+  -  `code` : 合约代码；
 
-  - version : 合约代码版本
+  - `version` : 合约代码版本
 
-  - status : 合约启用状态，目前未使用，默认为ENABLE；
+  - `status` : 合约启用状态，目前未使用，默认为`ENABLE`
 
-  - metadatas_hash : 每个账号都有自己的一个小型的“版本化的键值对数据库”，用来存储用户自定义的内容。每一条数据我们都称为一个metadata，它有3个元素键key、值value和版本号version。
+  - `metadatas_hash` : 每个账号都有自己的一个小型的“版本化的键值对数据库”，用来存储用户自定义的内容。每一条数据我们都称为一个`metadata`，它有3个元素键key、值value和版本号version
 
     ```protobuf
     message KeyPair
@@ -73,16 +73,16 @@ message Contract{
     }
     ```
 
-      对于一个账户的每一条metadata：
+      对于一个账户的每一条`metadata`：
 
-       K = KeyPair.key
-       V = KeyPair.SerializeAsString()
+       `K = KeyPair.key`
+       `V = KeyPair.SerializeAsString()`
 
-      我们将(K,V)作为一个元素，所有的这样的(K,V)元素组成的集合记为metadatas，那么
+      我们将(K,V)作为一个元素，所有的这样的(K,V)元素组成的集合记为`metadatas`，那么
 
-       metadatas_hash = MerkelRootHash(metadatas)
+       `metadatas_hash = MerkelRootHash(metadatas)`
 
-      其中MerkelRootHash是对这个集合进行默克尔树进行HASH运算，参见附录Merkel Trie。
+      其中`MerkelRootHash`是对这个集合进行默克尔树进行HASH运算，参见附录`Merkel Trie`。
 
 ### 2.2.2 地址
 
@@ -94,11 +94,11 @@ message Contract{
 
 `did:bid` : 地址前缀
 
-`efy` : 加密类型 & 编码类型
+`ef `: 加密类型 & 编码类型
 
-`85ZbAozTgwXw92rb3QEfd7ZHcByVM` ：后缀，公钥经过哈希算法之后截取， 然后再进行编码后得到的字符串，不同的编码方式生成的后缀长度和格式不同。编码类型为‘t’生成的后缀字母全为小写，其他两种类型生成的字母区分大小写。
+`y85ZbAozTgwXw92rb3QEfd7ZHcByVM` ：后缀，公钥经过哈希算法之后截取， 然后再进行编码后得到的字符串，不同的编码方式生成的后缀长度和格式不同。编码类型为‘t’生成的后缀字母全为小写，其他两种类型生成的字母区分大小写。
 
-不同类型的编码方式生成的后缀长度不同，以Base58编码方式生成的后缀长度为22-31字节。
+不同类型的编码方式生成的后缀长度不同，以`Base58`编码方式生成的后缀长度为22-31字节。
 
 #### 2.2.2.2 星火公私钥
 
@@ -108,11 +108,11 @@ message Contract{
 
 星火地址格式私钥格式说明：
 
-- 私钥前缀：`0x18 0x93 0x99`
+- 私钥前缀：`0x18` `0x93` ` 0x99`
 
 - 私钥加密算法类型：n 与星火地址格式中加密类型相同；如`edd25519`为`0x65`
 
-- 编码类型：与星火地址格式中编码类型相同；如`base58`为`0x66`
+- 编码类型：与星火地址格式中编码类型相同；如`base58`为 `0x66`
 
 - 原生私钥： 按照如上格式生成私钥字符串后，需要按照编码类型格式进行处理，星火私钥`PriKey = Base58(0x18 0x93 0x99 0x65 0x66 0xxxxxxx)`
 
@@ -138,9 +138,9 @@ message Contract{
 
 <img src="../_static/images/3.2-1账户许可.png">
 
-### 2.2.3 可升级合约机构
+### 3.2.3 可升级合约机构
 
-星火链从账户层面上将合约内的数据和逻辑分离，实现对智能合约升级的支持。上文的Contract结构中可以看到合约的逻辑被存储在code字段内，合约内的数据称为`metadata`,独立存储，合约内仅保存`metadata`的hash用于验证。这样的结构设计允许合约在不改变地址的情况下替换code，即合约升级。
+星火链从账户层面上将合约内的数据和逻辑分离，实现对智能合约升级的支持。上文的Contract结构中可以看到合约的逻辑被存储在code字段内，合约内的数据称为metadata,独立存储，合约内仅保存metadata的hash用于验证。这样的结构设计允许合约在不改变地址的情况下替换code，即合约升级。
 
 ## 2.3 交易
 
@@ -156,13 +156,15 @@ message Transaction {
 }
 ```
 
-- `source_address` 交易发起者地址，交易发起者仅为普通账户地址，不能为合约账户地址；这笔交易的发起账号，必须是系统中已经存在的账号
+- `source_address` 交易发起者地址，交易发起者仅为普通账户地址，不能为合约账户地址；这笔交易的发起账号，必须是系统中已经存在的账号。
 
-- `transactionData` 交易的主体，指定了这笔交易内容
+- `transactionData` 交易的主体，指定了这笔交易内容。
 
-- `signatures` 交易的签名；交易签名格式如下，交易签名生成规则为：
+- `signatures `交易的签名；交易签名格式如下，交易签名生成规则为：
 
-`signData = Sign(source_address + TransactionData. SerializeAsString(), privateKey)`
+$$
+signData = Sign(source_address + TransactionData. SerializeAsString(), privateKey)
+$$
 
 即利用私钥对数据进行签名，数据格式为源账户地址source_address拼接交易体序列化后的数据`TransactionData. SerializeAsString()`。
 
@@ -176,9 +178,9 @@ message Signature {
 }
 ```
 
-- `public_key` 交易签名星火私钥对应的星火公钥
+- `public_key` 交易签名星火私钥对应的星火公钥。
 
-- `data` 签名完成的数据
+- `data` 签名完成的数据。
   - `sign_data` 签名完成的二进制数据
   - `sign_data_str`为方便展示输出的十六进制签名数据
 
@@ -208,29 +210,29 @@ message TransactionData {
 }
 ```
 
-- `type` 交易类型，目前支持合约部署，合约调用，转账三种交易类型
+- `type` 交易类型，目前支持合约部署，合约调用，转账三种交易类型。
 
-- `gas_limit` 交易提供的gas上限
+- `gas_limit` 交易提供的`gas`上限。
 
-- `gas_price` 交易提供的每个gas的价格
+- `gas_price` 交易提供的每个`gas`的价格。
 
-- `ceil_ledger_seq`交易执行的区块高度限制。详见交易`nonce`
+- ceil_ledger_seq交易执行的区块高度限制。详见交易`nonce`。
 
-- `chain_id` 链ID
+- `chain_id` 链ID。
 
-- `domain_id` 服务域ID，表示当前交易要发送到某个服务域上
+- `domain_id` 服务域ID，表示当前交易要发送到某个服务域上。
 
-- `nonce` 某个账户发起交易的唯一标识，防止重放攻击，详见交易`nonce`
+- `nonce` 某个账户发起交易的唯一标识，防止重放攻击，详见交易`nonce`。
 
-- `dest_address` 交易作用的目的地址
+- `dest_address` 交易作用的目的地址：
 
-  当交易类型为`CREATE_CONTRACT`时，`dest_address`必须为空
+  当交易类型为`CREATE_CONTRAC`T时，`dest_address`必须为空；
 
-  当交易类型为`CALL_CONTRAC`T时，`dest_address`必须为已存在的合约账户地址
+  当交易类型为`CALL_CONTRACT`时，`dest_address`必须为已存在的合约账户地址；
 
-  当交易类型为`TRANSFER`时，`dest_address`可以为空
+  当交易类型为`TRANSFER`时，`dest_address`可以为空；
 
-- `input`交易的有效负载，指定了交易的内容
+- `input`交易的有效负载，指定了交易的内容。
 
 ### 2.3.2 nonce设计
 
@@ -251,15 +253,15 @@ message TransactionData {
 
 2. **性能**
 
-   区块链节点只需要维护有效期内的交易nonce值，即`ceil_ledger_seq` > `current_ledger` 的nonce值集合，以降低维护成本。
+   区块链节点只需要维护有效期内的交易nonce值，即ceil_ledger_seq > current_ledger 的nonce值集合，以降低维护成本。
 
    经过交易唯一性判断后的历史交易集合中，存在以下这几种可能：
 
-   1）`ceil_ledger_seq`与`nonce`为1对N，即同一`ceil_ledger_seq`对应不同的`nonce`;
+   1）`ceil_ledger_seq`与`nonce`为1对N，即同一`ceil_ledger_seq`对应不同的`nonce`
 
-   2）`ceil_ledger_seq - blocklimit`区间外与`nonce`为N对1
+   2）`ceil_ledger_seq` - `blocklimit`区间外与`nonce`为N对1
 
-   3）`ceil_ledger_seq - blocklimit`区间内与`nonce`为N对N
+   3）`ceil_ledger_seq` - `blocklimit`区间内与`nonce`为N对N
 
 ## 2.4 共识
 
@@ -310,33 +312,45 @@ message LedgerHeader
 }
 ```
 
-- `seq` 区块的序号，从1开始递增，每产生1个区块，序号加1，是区块的唯一标识
-- `previous_hash` 上一个区块hash，即LedgerHeader.headerhash.对于创世区块没有上一个区块，此值为空`LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())`
+- `seq` 区块的序号，从1开始递增，每产生1个区块，序号加1，是区块的唯一标识。
 
-- `close_time` 区块形成时间
+- `previous_hash` 上一个区块`hash`，即`LedgerHeader.headerhash.`对于创世区块没有上一个区块，此值为空。
 
-- `version` 区块的版本号。若区块生成的设计上有变更，区块版本号可以作为识别的依据，在不同的区块中采取不同的规则
+  
+  $$
+  LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())
+  $$
 
-- `chain_id` 链版本号
+- `close_time` 区块形成时间；
+
+- `version` 区块的版本号。若区块生成的设计上有变更，区块版本号可以作为识别的依据，在不同的区块中采取不同的规则；
+
+- `chain_id` 链版本号。
 
 - `domain_hashs` 各服务域区块验证数据
 
-  - `domain_id` 服务域id
+  - `domain_id` 服务域id；
 
   - `account_tree_hash` 当前区块所在服务域修改账号树的hash。 由当前区块交易执行之后，区块所修改账号组成默克尔树计算出出来的hash。对于一个账号A，其地址为address，我们定义
 
-  ​		`K = address`
-  ​		`V = Account.SerializeAsString()`
+  $$
+  K = address\\
+  ​		V = Account.SerializeAsString()
+  $$
 
   ​		所有的账号以(K,V)形式组成集合ACCOUNTS
 
-  ​		`account_tree_hash = MerkelRootHash(ACCOUNTS)`
-
+  $$
+  account_tree_hash = MerkelRootHash(ACCOUNTS)
+  $$
   参加附录 MerkelTrie
 
-  - domain_tx_hash 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:`hash = sha256(Tx.SerializeAsString())`;所有交易以字符串形式组成哈希字符串；`hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)`
-  - txcount 到目前为止，当前区块中所有服务域的交易数量
+  - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:`hash = sha256(Tx.SerializeAsString())`;所有交易以字符串形式组成哈希字符串:`hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)`
+  - `txcount` 到目前为止，当前区块中所有服务域的交易数量；
 
-- `headerhash LedgerHeader`中`header`字段序列化hash；`headerhash = sha256(LedgerHeader. SerializeAsString())`
+- `headerhash` `LedgerHeader`中`header`字段序列化hash
+  $$
+  headerhash = sha256(LedgerHeader. SerializeAsString())
+  $$
 
-- `extradata` 保留字段
+- `extradata` 保留字段；

@@ -19,8 +19,8 @@ message BenchSegmentRange{
 message DomainAccountHash{
 	int32 domain_id = 1;
 	bytes account_tree_hash = 2; //区块内修改账户的hash
-	bytes domain_tx_hash = 3;
-	int64 txcount = 4;
+    bytes domain_tx_hash = 3;
+    int64 txcount = 4;
 }
 message Neighbor {
     repeated int32 neighbors = 1;
@@ -66,32 +66,38 @@ message ConsensusValue{
 
 #### 4.1.1.1 ConsensusValueHeader
 
-- `close_time` 区块打包时间，由出块节点控制生成；由出块时间间隔进行控制
+- `close_time` 区块打包时间，由出块节点控制生成；由出块时间间隔进行控制。
 
-- `previous_proof` 上一区块出块证明；星火链使用该字段进行上一区块的确认，与共识类型相关。单节点情况下，该字段为固定字符串，如为多节点情况，该字段一般为其余共识节点的签名信息
+- `previous_proof `上一区块出块证明；星火链使用该字段进行上一区块的确认，与共识类型相关。单节点情况下，该字段为固定字符串，如为多节点情况，该字段一般为其余共识节点的签名信息。
 
-- `ledger_seq` 当前共识的区块高度
+- `ledger_seq` 当前共识的区块高度。
 
-- `previous_ledger_hash` 前一个区块的账本hash，即`LedgerHeader.header_hash`
+- `previous_ledger_hash` 前一个区块的账本hash，即`LedgerHeader.header_hash`。
 
 - `DomainTxsIndex` 各服务域交易哈希信息
-  - `domainId` 服务域标识id
-  - `domaintxshash` 对应`ConsensusValueBody`中的`DomainTxs`，即域数据的快照信息
+  - `domainId `服务域标识id;
+  - `domaintxshash` 对应`ConsensusValueBody`中的`DomainTxs`，即域数据的快照信息；
 
 #### 4.1.1.2 ConsensusValueBody
 
 该结构中包含内容为共识过程中各服务域的具体信息数据。
 
-- `domainId` 服务域标识id
+- `domainId` 服务域标识id。
 
-- `txs` 服务域打包的交易数据；使用bytes存放，具体内容为全部交易的序列化字符串，即`txs = tx1. SerializeAsString() + tx2. SerializeAsString() + …`
+- `txs` 服务域打包的交易数据:使用bytes存放，具体内容为全部交易的序列化字符串，即
+  
+  
+  $$
+  txs = tx1. SerializeAsString() + tx2. SerializeAsString() + …
+$$
+  
+- `txs_dag` 并行结构数据，目前暂未使用。
 
-- `txs_dag` 并行结构数据，目前暂未使用
-- `bench_segment_range`并行结构数据，目前暂未使用
+- `bench_segment_range`并行结构数据，目前暂未使用。
 
 #### 4.1.1.3 DomainAccountHash
 
-同区块中`DomainAccountHash`。
+同区块中DomainAccountHash;
 
 #### 4.1.1.4 共识数据处理
 
@@ -105,13 +111,13 @@ message ConsensusValue{
 
 ```protobuf
 message LedgerHeaderData{
-	int64	seq			= 1;
-	bytes	previous_hash		= 2;
-	int64   close_time		= 3;
-	int64	version			= 4;
-	int64	chain_id		= 5;
+	int64	seq 		            = 1;
+    bytes	previous_hash 		= 2;
+	int64   close_time 				= 3;
+	int64	version 			    = 4;
+    int64	chain_id                = 5;
 	repeated DomainAccountHash domain_hashs = 6;
-	int64   conf_seq = 7; }
+    int64   conf_seq = 7; }
 
 message LedgerHeader{
      LedgerHeaderData header = 1;
@@ -134,7 +140,7 @@ message Ledger{
 
 星火链交易在处理完成后，需要将交易写到区块链中；共识完成后，需要将区块数据写到区块链中；为维护区块链环境正常运行，同样需要包含其它一些配置性参数上链。
 
-为保证区块链各服务域的数据隔离，每个服务域维护各自的数据库；为保证区块链处理效率，针对同一个域数据读写频次不同，目前分为账户库和账本库两个数据库。
+为保证区块链各服务域的数据隔离，每个服务域维护各自的数据库；为保证区块链处理效率，针对同一个域数据读写频次不同，目前分为账户库和账本库两个数据库；
 
 <img src="../_static/images/5.3-1数据存储结构.png">
 
