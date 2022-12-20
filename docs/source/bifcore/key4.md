@@ -86,10 +86,8 @@ message ConsensusValue{
 
 - `txs` 服务域打包的交易数据:使用bytes存放，具体内容为全部交易的序列化字符串，即
   
-  
-  $$
-  txs = tx1. SerializeAsString() + tx2. SerializeAsString() + …
-$$
+  <center>
+      txs = tx1. SerializeAsString() + tx2. SerializeAsString() + …
   
 - `txs_dag` 并行结构数据，目前暂未使用。
 

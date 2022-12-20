@@ -316,10 +316,8 @@ message LedgerHeader
 
 - `previous_hash` 上一个区块`hash`，即`LedgerHeader.headerhash.`对于创世区块没有上一个区块，此值为空。
 
-  
-  $$
-  LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())
-  $$
+  <center>
+      LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())
 
 - `close_time` 区块形成时间；
 
@@ -333,24 +331,25 @@ message LedgerHeader
 
   - `account_tree_hash` 当前区块所在服务域修改账号树的hash。 由当前区块交易执行之后，区块所修改账号组成默克尔树计算出出来的hash。对于一个账号A，其地址为address，我们定义
 
-  $$
-  K = address\\
-  ​		V = Account.SerializeAsString()
-  $$
+    <center>
+        K = address<br>
+    ​		V = Account.SerializeAsString()
+
+    
 
   ​		所有的账号以(K,V)形式组成集合ACCOUNTS
 
-  $$
-  account_tree_hash = MerkelRootHash(ACCOUNTS)
-  $$
+  <center>
+      account_tree_hash = MerkelRootHash(ACCOUNTS)
+
   参加附录 MerkelTrie
 
   - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:`hash = sha256(Tx.SerializeAsString())`;所有交易以字符串形式组成哈希字符串:`hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)`
   - `txcount` 到目前为止，当前区块中所有服务域的交易数量；
 
 - `headerhash` `LedgerHeader`中`header`字段序列化hash
-  $$
-  headerhash = sha256(LedgerHeader. SerializeAsString())
-  $$
+
+  <center>
+      headerhash = sha256(LedgerHeader. SerializeAsString())
 
 - `extradata` 保留字段；

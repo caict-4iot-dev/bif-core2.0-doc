@@ -88,16 +88,14 @@ message InputCallContract{
 
 签名内容：
 
+<center>
+    signdata = source_address + sha256(TransactionData. SerializeAsString())
 
-$$
-signdata = source_address + sha256(TransactionData. SerializeAsString())
-$$
 验证结果：
 
+<center>
+    result = edd25519.verify(signdata, Signature.public_key)
 
-$$
-result = edd25519.verify(signdata, Signature.public_key)
-$$
 **签名结构**
 
 ```protobuf
