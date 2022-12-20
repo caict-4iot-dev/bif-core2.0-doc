@@ -3,7 +3,7 @@
 ## 编译
 
 ```
-git clone https://github.com/caict-4iot-dev/bif-core2.0-doc
+git clone https://github.com/caict-4iot-dev/bif-core2.0-doc.git
 
 cd bif-core2.0-doc/docs
 
