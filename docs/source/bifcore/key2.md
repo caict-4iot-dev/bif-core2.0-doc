@@ -346,8 +346,6 @@ message LedgerHeader
 
   - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:hash = sha256(Tx.SerializeAsString());所有交易以字符串形式组成哈希字符串:hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)
 
-    
-
   - `txcount` 到目前为止，当前区块中所有服务域的交易数量；
 
 - `headerhash` `LedgerHeader`中`header`字段序列化hash
