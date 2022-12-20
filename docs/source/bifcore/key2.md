@@ -162,9 +162,9 @@ message Transaction {
 
 - `signatures `交易的签名；交易签名格式如下，交易签名生成规则为：
 
-$$
-signData = Sign(source_address + TransactionData. SerializeAsString(), privateKey)
-$$
+  <center>
+      signData = Sign(source_address + TransactionData. SerializeAsString(), privateKey)
+  </center>
 
 即利用私钥对数据进行签名，数据格式为源账户地址source_address拼接交易体序列化后的数据`TransactionData. SerializeAsString()`。
 
@@ -318,6 +318,7 @@ message LedgerHeader
 
   <center>
       LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())
+  </center>
 
 - `close_time` 区块形成时间；
 
@@ -333,24 +334,24 @@ message LedgerHeader
 
     <center>
         K = address<br>
-    ​		V = Account.SerializeAsString()
-
-    
-
-  ​		所有的账号以(K,V)形式组成集合ACCOUNTS
-
+    	V = Account.SerializeAsString()
+  </center>
+  
+	所有的账号以(K,V)形式组成集合ACCOUNTS
+  
   <center>
-      account_tree_hash = MerkelRootHash(ACCOUNTS)
+    account_tree_hash = MerkelRootHash(ACCOUNTS)
+  </center>
 
-  参加附录 MerkelTrie
-
+  参见附录 MerkelTrie
+  
   - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:hash = sha256(Tx.SerializeAsString());所有交易以字符串形式组成哈希字符串:hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)
-
-  - `txcount` 到目前为止，当前区块中所有服务域的交易数量；
-
+  - `txcount`到目前为止，当前区块中所有服务域的交易数量
+  
 - `headerhash` `LedgerHeader`中`header`字段序列化hash
 
   <center>
       headerhash = sha256(LedgerHeader. SerializeAsString())
+  </center>
 
 - `extradata` 保留字段；
