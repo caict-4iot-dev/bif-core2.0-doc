@@ -15,17 +15,17 @@ message InputCreateContract
 }
 message Contract{
     enum ContractType{
-		SYSTEM = 0;
-		EVM = 1;
+        SYSTEM = 0;
+        EVM = 1;
         UNKNOWN = 10;
 	};
-  	enum STATUS_FALG {
-		ENABLED        = 0;
-		DISABLED       = 1;
+    enum STATUS_FALG {
+        ENABLED        = 0;
+        DISABLED       = 1;
 	};
-	ContractType type = 1;
-	string code = 2;
-	int64 version = 3;
+    ContractType type = 1;
+    string code = 2;
+    int64 version = 3;
     bytes metadatas_hash = 4;
     STATUS_FALG status = 5;
 }
@@ -34,10 +34,10 @@ message Contract{
 - `contract` 合约创建交易需要创建的合约内容。
 
 - `type` 为合约使用虚拟机类型；合约创建禁止创建`SYSTEM`合约，目前仅支持`EVM`合约。
-  - `code`为合约代码，必填。
-  - `version`为合约版本号，不支持在合约创建时指定，默认为0；合约创建交易中不需要填写。
-  - `metadatas_hash`为合约元数据`hash`，与合约中具体变量值有关，不需要填写。
-  - `status`为合约使用状态描述，默认为`ENABLE`；合约创建交易不需填写。
+  - `code`为合约代码，必填
+  - `version`为合约版本号，不支持在合约创建时指定，默认为0；合约创建交易中不需要填写
+  - `metadatas_hash`为合约元数据`hash`，与合约中具体变量值有关，不需要填写
+  - `status`为合约使用状态描述，默认为`ENABLE`；合约创建交易不需填写
 
 - `init_balance` 创建合约时赋予的初始原生资产数额，从创建该账号的源账户的`balance`内扣取。
 
@@ -56,7 +56,7 @@ message Contract{
 ```protobuf
 message InputCallContract{
      int64 amount = 2;
-	 string input = 3;
+     string input = 3;
 }
 ```
 
@@ -86,21 +86,20 @@ message InputCallContract{
 
 - 交易签名验证 检测交易包含的签名是否合法，具体验证规则如下：
 
-签名内容：
-
-<center>
+**签名内容**：
+<left>
     signdata = source_address + sha256(TransactionData. SerializeAsString())
+</left>
 
-验证结果：
-
-<center>
+**验证结果**：
+<left>
     result = edd25519.verify(signdata, Signature.public_key)
+</left>
 
-**签名结构**
-
+**签名结构**:
 ```protobuf
 message Transaction {
-	string source_address = 1;
+    string source_address = 1;
     TransactionData data = 2;
     Signature signature = 3;
 }

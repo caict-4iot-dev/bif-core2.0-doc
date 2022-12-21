@@ -15,39 +15,40 @@
 ```protobuf
 message Account{
     enum TRUST_FLAG {
-		UNCERT        = 0;
-		TRUSTED       = 1;
-		UNTRUSTED     = 2;
+        UNCERT        = 0;
+        TRUSTED       = 1;
+        UNTRUSTED     = 2;
 	};
 
 	string address = 1;
 	int64 balance = 2;
 	TRUST_FLAG trusted = 3;
 	string public_key = 4;
-    Contract contract = 5;
+	Contract contract = 5;
 }
 message Contract{
     enum ContractType{
-		SYSTEM = 0;
-		EVM = 1;
+        SYSTEM = 0;
+        EVM = 1;
         UNKNOWN = 10;
 	}
     enum STATUS_FALG {
-		ENABLED        = 0;
-		DISABLED       = 1;
+        ENABLED        = 0;
+        DISABLED       = 1;
 	};
 	
 	ContractType type = 1;
 	string code = 2;
 	int64 version = 3;
-    bytes metadatas_hash = 4;
-    STATUS_FALG status = 5;
+	bytes metadatas_hash = 4;
+	STATUS_FALG status = 5;
 }
 ```
 
 - `address` : 星火地址。
 
 - `balance` : 账户余额，即账户所含星火令的数量；当账户打包并请求执行一笔交易的时候，支付的交易费用将从`balance`中扣除。如果支付的费用超过交易执行实际需要的费用，多余的部分将返回账户`balance`。
+
 - `trusted` : 账户可信标识，目前暂未使用。
 
 - `public_key` : 账户公钥，即生成账号的星火公钥。
@@ -56,13 +57,13 @@ message Contract{
 
   -  `type` : 合约类型，目前仅支持`solidity`合约
 
-  -  `code` : 合约代码；
+  -  `code` : 合约代码
 
   - `version` : 合约代码版本
 
   - `status` : 合约启用状态，目前未使用，默认为`ENABLE`
 
-  - `metadatas_hash` : 每个账号都有自己的一个小型的“版本化的键值对数据库”，用来存储用户自定义的内容。每一条数据我们都称为一个`metadata`，它有3个元素键key、值value和版本号version
+  - `metadatas_hash` : 每个合约账号都有自己的一个小型的“版本化的键值对数据库”，用来存储用户自定义的内容。每一条数据我们都称为一个`metadata`，它有3个元素键key、值value和版本号version：
 
     ```protobuf
     message KeyPair
@@ -76,13 +77,15 @@ message Contract{
       对于一个账户的每一条`metadata`：
 
        `K = KeyPair.key`
+    
        `V = KeyPair.SerializeAsString()`
-
-      我们将(K,V)作为一个元素，所有的这样的(K,V)元素组成的集合记为`metadatas`，那么
-
-       `metadatas_hash = MerkelRootHash(metadatas)`
-
-      其中`MerkelRootHash`是对这个集合进行默克尔树进行HASH运算，参见附录`Merkel Trie`。
+    
+  
+  我们将(K,V)作为一个元素，所有的这样的(K,V)元素组成的集合记为`metadatas`，那么
+  
+   `metadatas_hash = MerkelRootHash(metadatas)`
+  
+  其中`MerkelRootHash`是对这个集合进行默克尔树进行HASH运算，参见附录`Merkel Trie`。
 
 ### 2.2.2 地址
 
@@ -114,7 +117,11 @@ message Contract{
 
 - 编码类型：与星火地址格式中编码类型相同；如`base58`为 `0x66`
 
-- 原生私钥： 按照如上格式生成私钥字符串后，需要按照编码类型格式进行处理，星火私钥`PriKey = Base58(0x18 0x93 0x99 0x65 0x66 0xxxxxxx)`
+- 原生私钥： 按照如上格式生成私钥字符串后，需要按照编码类型格式进行处理，星火私钥:
+
+  <left>
+      PriKey = Base58(0x18 0x93 0x99 0x65 0x66 0xxxxxxx)
+  </left>
 
 **星火公钥**
 
@@ -128,9 +135,11 @@ message Contract{
 
 -  编码类型：与星火地址格式中编码类型相同
 
-- 原生公钥
+- 原生公钥:按照如上格式生成公钥字符串后，需要按照十六进制格式进行处理，星火公钥:
 
-按照如上格式生成公钥字符串后，需要按照十六进制格式进行处理，星火公钥`PubKey = Hex(0xb0 0x65 0x66 0xxxxxx)`。
+  <left>
+  PubKey = Hex(0xb0 0x65 0x66 0xxxxxx)    
+  </left>
 
 ### 2.2.3 账户许可
 
@@ -150,7 +159,7 @@ message Contract{
 
 ```protobuf
 message Transaction {
-	string source_address = 1;
+    string source_address = 1;
     TransactionData data = 2;
     Signature signature = 3;
 }
@@ -162,15 +171,15 @@ message Transaction {
 
 - `signatures `交易的签名；交易签名格式如下，交易签名生成规则为：
 
-  <center>
+  <left>
       signData = Sign(source_address + TransactionData. SerializeAsString(), privateKey)
-  </center>
+  </left>
 
 即利用私钥对数据进行签名，数据格式为源账户地址source_address拼接交易体序列化后的数据`TransactionData. SerializeAsString()`。
 
 ```protobuf
 message Signature {
-	string public_key = 1;
+    string public_key = 1;
     oneof data{
         bytes sign_data = 2;
         string sign_data_str = 3;
@@ -189,19 +198,19 @@ message Signature {
 ```protobuf
 message TransactionData {
     enum Type {
-		UNKNOWN = 0;
-		CREATE_CONTRACT 		= 1;  //创建合约
-        CALL_CONTRACT           = 2;  //调用合约或向合约中质押、转账
+         UNKNOWN = 0;
+         CREATE_CONTRACT 		= 1;  //创建合约
+         CALL_CONTRACT           = 2;  //调用合约或向合约中质押、转账
          TRANSFER                = 3;  //转账或创建账户
 	};
 	Type  type = 1;
-    int64 gas_limit = 2;
+	int64 gas_limit = 2;
 	int64 gas_price =3;
 	int64 ceil_ledger_seq = 4;
-    int64 chain_id = 5;
+	int64 chain_id = 5;
 	int32 domain_id = 6;
-    string nonce = 7;
-    string dest_address = 8;
+	string nonce = 7;
+	string dest_address = 8;
     oneof input {
         InputCreateContract create_account = 9;
         InputCallContract call_contract = 10;
@@ -295,30 +304,30 @@ message LedgerHeaderData
 	int64 close_time = 3;
 	int64 version = 4;
 	int64 chain_id = 5;
-	repeated DomainAccountHash 			domain_hashs = 6;
+	repeated DomainAccountHash domain_hashs = 6;
 }
 message DomainAccountHash
 {
-    int32 domain_id = 1;
-    bytes accout_tree_hash = 2;
-    bytes domain_tx_hash = 3;
-    int64 txcount = 4;
+	int32 domain_id = 1;
+	bytes accout_tree_hash = 2;
+	bytes domain_tx_hash = 3;
+	int64 txcount = 4;
 }
 message LedgerHeader
 {
-    LedgerHeaderData header = 1;
-    bytes headerhash = 2;
-    bytes extradata = 3;
+	LedgerHeaderData header = 1;
+	bytes headerhash = 2;
+	bytes extradata = 3;
 }
 ```
 
 - `seq` 区块的序号，从1开始递增，每产生1个区块，序号加1，是区块的唯一标识。
 
-- `previous_hash` 上一个区块`hash`，即`LedgerHeader.headerhash.`对于创世区块没有上一个区块，此值为空。
+- `previous_hash` 上一个区块`hash`，即`LedgerHeader.headerhash.`对于创世区块没有上一个区块，此值为空：
 
-  <center>
+  <left>
       LedgerHeader.headerhash = HASH(LedgerHeader.header.SerializeAsString())
-  </center>
+  </left>
 
 - `close_time` 区块形成时间；
 
@@ -328,30 +337,43 @@ message LedgerHeader
 
 - `domain_hashs` 各服务域区块验证数据
 
-  - `domain_id` 服务域id；
+  - `domain_id` 服务域id
 
-  - `account_tree_hash` 当前区块所在服务域修改账号树的hash。 由当前区块交易执行之后，区块所修改账号组成默克尔树计算出出来的hash。对于一个账号A，其地址为address，我们定义
+  - `account_tree_hash` 当前区块所在服务域修改账号树的hash。 由当前区块交易执行之后，区块所修改账号组成默克尔树计算出出来的hash。对于一个账号A，其地址为address，我们定义:
 
-    <center>
+    <left>
         K = address<br>
     	V = Account.SerializeAsString()
-  </center>
+    </left>
   
-	所有的账号以(K,V)形式组成集合ACCOUNTS
+	  所有的账号以(K,V)形式组成集合ACCOUNTS:
   
-  <center>
-    account_tree_hash = MerkelRootHash(ACCOUNTS)
-  </center>
+    <left>
+        account_tree_hash = MerkelRootHash(ACCOUNTS)
+    </left>
 
-  参见附录 MerkelTrie
   
-  - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:hash = sha256(Tx.SerializeAsString());所有交易以字符串形式组成哈希字符串:hashStr = hash1 + hash2 + hash…;domain_tx_hash = sha256(hashStr)
+    参见附录 MerkelTrie
+  
+  - `domain_tx_hash` 当前区块所在服务域的交易hash。对于一笔交易Tx，其交易hash为:
+  
+    <left>
+        hash = sha256(Tx.SerializeAsString())
+    </left>
+  
+    所有交易以字符串形式组成哈希字符串:
+  
+    <left>
+        hashStr = hash1 + hash2 + hash… <br>
+        domain_tx_hash = sha256(hashStr)
+    </left>
+  
   - `txcount`到目前为止，当前区块中所有服务域的交易数量
   
-- `headerhash` `LedgerHeader`中`header`字段序列化hash
+- `headerhash` `LedgerHeader`中`header`字段序列化hash：
 
-  <center>
+  <left>
       headerhash = sha256(LedgerHeader. SerializeAsString())
-  </center>
+  </left>
 
-- `extradata` 保留字段；
+- `extradata` 保留字段。

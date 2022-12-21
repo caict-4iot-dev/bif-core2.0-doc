@@ -8,9 +8,9 @@
 
 `EVMC`主要定义了两种调用的接口：
 
-`Instance`接口：节点调用虚拟机引擎的接口；虚拟机引擎按照规则实现具体接口，标识具体虚拟机引擎信息，创建及销毁逻辑。
+- `Instance`接口：节点调用虚拟机引擎的接口；虚拟机引擎按照规则实现具体接口，标识具体虚拟机引擎信息，创建及销毁逻辑。
 
-`HostInterface`接口：虚拟机引擎回调节点的接口；虚拟机引擎在具体实现逻辑中需要调用节点接口时，直接调用`HostInterface`中提供的接口。
+- `HostInterface`接口：虚拟机引擎回调节点的接口；虚拟机引擎在具体实现逻辑中需要调用节点接口时，直接调用`HostInterface`中提供的接口。
 
 当存在具体实例化调用时，节点需要根据`HostInterface`逻辑实现并绑定到`EVMC`模块中。
 
@@ -37,21 +37,20 @@ Function Evm2BifAddress(EvmAddress){
 }
 
 Function BifAddress2Evm(BifAddress){
-		evmAddress = “”;
-		subAddress = BifAddress.substr(8);
-		signType = subAddress.substr(0,1)
-		encodeType = subAddress.substr(1,1)
-		if(EDD25519)	evmAddress += hex(‘e’)
-		Else(SM2)  	evmAddress += hex(‘z’)
+     evmAddress = “”;
+     subAddress = BifAddress.substr(8);
+     signType = subAddress.substr(0,1)
+     encodeType = subAddress.substr(1,1)
+     if(EDD25519)	evmAddress += hex(‘e’)
+     Else(SM2)  	evmAddress += hex(‘z’)
 
-		if(BASE58)	{
-    		evmAddress += hex(‘f’)
-    		evmAddress += base58Decode(subAddress.substr(2))
-		} 
-		else {
+     if(BASE58)	{
+          evmAddress += hex(‘f’)
+          evmAddress += base58Decode(subAddress.substr(2))
+     }else {
     		暂未支持；
-		}
-		return evmAddress;
+		   }
+     return evmAddress;
 }
 ```
 
@@ -59,17 +58,17 @@ Function BifAddress2Evm(BifAddress){
 
 ### 5.2.2 指令兼容
 
-星火链平台中，solidity不支持STATICCALL指令。
+星火链平台中，`solidity`不支持`STATICCALL`指令。
 
-星火链平台中，solidity不支持CALLCODE指令。
+星火链平台中，`solidity`不支持`CALLCODE`指令。
 
-星火链平台中，solidity不支持SELFDESTRUCT指令。
+星火链平台中，`solidity`不支持`SELFDESTRUCT`指令。
 
-星火链平台中，合约账户无codehash，solidity不支持EXTCODEHASH指令。
+星火链平台中，合约账户无`codehash`，`solidity`不支持`EXTCODEHASH`指令。
 
-星火链平台中，区块中未保存出块人信息，solidity不支持COINBASE指令。
+星火链平台中，区块中未保存出块人信息，`solidity`不支持`COINBASE`指令。
 
-星火链平台中，无难度值概念，solidity不支持DIFFICULT指令。
+星火链平台中，无难度值概念，`solidity`不支持`DIFFICULT`指令。
 
 ## 5.3 异常处理
 
